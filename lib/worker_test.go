@@ -1,9 +1,9 @@
 package lib
 
 import (
-	"testing"
-	"net/http/httptest"
 	"net/http"
+	"net/http/httptest"
+	"testing"
 )
 
 const K = 5
@@ -39,9 +39,9 @@ func TestGetData(t *testing.T) {
 	}
 }
 
-func TestCounting(t *testing.T)  {
-	testCases := []struct{
-		body string
+func TestCounting(t *testing.T) {
+	testCases := []struct {
+		body   string
 		expect int
 	}{
 		{"", 0},

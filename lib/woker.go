@@ -1,18 +1,18 @@
 package lib
 
 import (
-	"sync"
-	"net/http"
+	"bytes"
 	"fmt"
 	"io/ioutil"
-	"bytes"
+	"net/http"
+	"sync"
 )
 
 // Basic worker struct that does all the job
 // Uses boolean channel as a limiter for a K number of concurrent jobs
 type worker struct {
 	sum int
-	wg sync.WaitGroup
+	wg  sync.WaitGroup
 	sync.Mutex
 	limiter chan bool
 }
@@ -27,7 +27,7 @@ func (w *worker) Run(url string) {
 	w.wg.Add(1)
 	go func() {
 		defer func() {
-			<- w.limiter
+			<-w.limiter
 			w.wg.Done()
 		}()
 
@@ -56,7 +56,7 @@ func (w *worker) getData(s string) ([]byte, error) {
 		return []byte{}, fmt.Errorf("could not read the response body, error: %s", err)
 	}
 
-    return data, nil
+	return data, nil
 }
 
 func (w *worker) getCount(data []byte, s string) int {
@@ -76,6 +76,6 @@ func (w worker) GetSum() int {
 	return w.sum
 }
 
-func (w *worker) Wait()  {
+func (w *worker) Wait() {
 	w.wg.Wait()
 }
